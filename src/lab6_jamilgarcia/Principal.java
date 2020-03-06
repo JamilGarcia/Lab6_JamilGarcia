@@ -5,17 +5,27 @@
  */
 package lab6_jamilgarcia;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Scanner;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author JamilGarcía
  */
 public class Principal extends javax.swing.JFrame {
 
+    String userPrin;
     /**
      * Creates new form Principal
      */
     public Principal() {
         initComponents();
+        Login.setVisible(true);
+        //boolean visible = false;
+        
     }
 
     /**
@@ -34,18 +44,18 @@ public class Principal extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         pf_login_pass = new javax.swing.JPasswordField();
         b_login_login = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        b_login_Registrarse = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jList1 = new javax.swing.JList<>();
+        jl_contactos = new javax.swing.JList<>();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
+        ta_mensajeEs = new javax.swing.JTextArea();
+        b_send = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jl_conversacion = new javax.swing.JList<>();
 
-        Login.setMinimumSize(new java.awt.Dimension(481, 391));
+        Login.setMinimumSize(new java.awt.Dimension(500, 460));
 
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         jLabel3.setText("Login");
@@ -55,8 +65,18 @@ public class Principal extends javax.swing.JFrame {
         jLabel5.setText("Password:");
 
         b_login_login.setText("Login");
+        b_login_login.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                b_login_loginMouseClicked(evt);
+            }
+        });
 
-        jButton2.setText("Registrarse");
+        b_login_Registrarse.setText("Registrarse");
+        b_login_Registrarse.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                b_login_RegistrarseMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout LoginLayout = new javax.swing.GroupLayout(Login.getContentPane());
         Login.getContentPane().setLayout(LoginLayout);
@@ -81,8 +101,8 @@ public class Principal extends javax.swing.JFrame {
                         .addComponent(b_login_login))
                     .addGroup(LoginLayout.createSequentialGroup()
                         .addGap(211, 211, 211)
-                        .addComponent(jButton2)))
-                .addContainerGap(106, Short.MAX_VALUE))
+                        .addComponent(b_login_Registrarse)))
+                .addContainerGap(125, Short.MAX_VALUE))
         );
         LoginLayout.setVerticalGroup(
             LoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -100,8 +120,8 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(54, 54, 54)
                 .addComponent(b_login_login)
                 .addGap(42, 42, 42)
-                .addComponent(jButton2)
-                .addContainerGap(90, Short.MAX_VALUE))
+                .addComponent(b_login_Registrarse)
+                .addContainerGap(91, Short.MAX_VALUE))
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -109,19 +129,24 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel1.setText("Conversacion:");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
-
         jLabel2.setText("Contactos:");
 
-        jScrollPane2.setViewportView(jList1);
+        jl_contactos.setModel(new DefaultListModel());
+        jScrollPane2.setViewportView(jl_contactos);
 
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane3.setViewportView(jTextArea2);
+        ta_mensajeEs.setColumns(20);
+        ta_mensajeEs.setRows(5);
+        jScrollPane3.setViewportView(ta_mensajeEs);
 
-        jButton1.setText("Send");
+        b_send.setText("Send");
+        b_send.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                b_sendMouseClicked(evt);
+            }
+        });
+
+        jl_conversacion.setModel(new DefaultListModel());
+        jScrollPane4.setViewportView(jl_conversacion);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -129,9 +154,9 @@ public class Principal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 886, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 880, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 886, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -142,7 +167,7 @@ public class Principal extends javax.swing.JFrame {
                         .addContainerGap(19, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(b_send, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(72, 72, 72))))
         );
         layout.setVerticalGroup(
@@ -154,20 +179,87 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 524, Short.MAX_VALUE))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(75, 75, 75)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(b_send, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void b_login_loginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_login_loginMouseClicked
+        // TODO add your handling code here:
+        
+        DefaultListModel listaContacts = (DefaultListModel) jl_contactos.getModel();
+        
+        File f = null;
+        Scanner sc = null;
+        String usuario = tf_login_user.getText();
+        String pass = pf_login_pass.getText();
+        try {
+            f = new File("./ficheros/users.txt");
+            sc = new Scanner(f);
+            sc.useDelimiter(";");
+            String n, u, p;
+            int e;
+            while (sc.hasNext()) {
+                n = sc.next();
+                u = sc.next();
+                p = sc.next();
+                e = sc.nextInt();
+                
+                listaContacts.addElement(u);
+                if (usuario.equals(u)) {
+                    userPrin = u;
+                    if (pass.equals(p)) {
+                        new Principal().setVisible(true);
+                    }else {
+                        JOptionPane.showMessageDialog(this, "Contraseña incorrecta");
+                    }
+                }
+            }
+           
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Algo salio mal");
+        }
+        sc.close();                                       
+    }//GEN-LAST:event_b_login_loginMouseClicked
+
+    private void b_login_RegistrarseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_login_RegistrarseMouseClicked
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_b_login_RegistrarseMouseClicked
+
+    private void b_sendMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_sendMouseClicked
+        // TODO add your handling code here:
+        DefaultListModel lista = (DefaultListModel) jl_conversacion.getModel();
+        String mensaje = ta_mensajeEs.getText();
+        lista.addElement(userPrin + ": " + mensaje);
+        for (int i = 0; i < mensaje.length(); i++) {
+            if(mensaje.charAt(i) == ('1')){
+                lista.addElement("Maquina: Funciona 1");
+            }
+            if(mensaje.charAt(i) == ('2')){
+                lista.addElement("Maquina: Funciona 2");
+            }
+            if(mensaje.charAt(i) == ('3')){
+                lista.addElement("Maquina: Funciona 3");
+            }
+            if(mensaje.charAt(i) == ('4')){
+                lista.addElement("Maquina: Funciona 4");
+            }
+        }
+        ta_mensajeEs.setText("");
+        
+    }//GEN-LAST:event_b_sendMouseClicked
 
     /**
      * @param args the command line arguments
@@ -199,28 +291,30 @@ public class Principal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Principal().setVisible(true);
+                new Principal().setVisible(false);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFrame Login;
+    private javax.swing.JButton b_login_Registrarse;
     private javax.swing.JButton b_login_login;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton b_send;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JList<String> jList1;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JList<String> jl_contactos;
+    private javax.swing.JList<String> jl_conversacion;
     private javax.swing.JPasswordField pf_login_pass;
+    private javax.swing.JTextArea ta_mensajeEs;
     private javax.swing.JTextField tf_login_user;
     // End of variables declaration//GEN-END:variables
+    ArrayList <AdminUsers> Users = new ArrayList();
+    ArrayList <String> mensajes = new ArrayList();
 }
