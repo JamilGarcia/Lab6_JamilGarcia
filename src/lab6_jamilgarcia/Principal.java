@@ -5,9 +5,15 @@
  */
 package lab6_jamilgarcia;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
@@ -18,6 +24,7 @@ import javax.swing.JOptionPane;
 public class Principal extends javax.swing.JFrame {
 
     String userPrin;
+
     /**
      * Creates new form Principal
      */
@@ -45,6 +52,17 @@ public class Principal extends javax.swing.JFrame {
         pf_login_pass = new javax.swing.JPasswordField();
         b_login_login = new javax.swing.JButton();
         b_login_Registrarse = new javax.swing.JButton();
+        Register = new javax.swing.JFrame();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        tf_register_nombre = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        tf_register_user = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        tf_register_password = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        jd_register_fecha = new com.toedter.calendar.JDateChooser();
+        b_register_Register = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -124,6 +142,78 @@ public class Principal extends javax.swing.JFrame {
                 .addContainerGap(91, Short.MAX_VALUE))
         );
 
+        Register.setMinimumSize(new java.awt.Dimension(542, 445));
+
+        jLabel6.setText("Register");
+
+        jLabel7.setText("Nombre:");
+
+        jLabel8.setText("User:");
+
+        jLabel9.setText("Password:");
+
+        jLabel10.setText("Fecha de Nacimiento:");
+
+        b_register_Register.setText("Register");
+        b_register_Register.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                b_register_RegisterMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout RegisterLayout = new javax.swing.GroupLayout(Register.getContentPane());
+        Register.getContentPane().setLayout(RegisterLayout);
+        RegisterLayout.setHorizontalGroup(
+            RegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(RegisterLayout.createSequentialGroup()
+                .addGroup(RegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(RegisterLayout.createSequentialGroup()
+                        .addGap(234, 234, 234)
+                        .addComponent(jLabel6))
+                    .addGroup(RegisterLayout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addGroup(RegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel8)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel9)
+                            .addComponent(jLabel10))
+                        .addGap(34, 34, 34)
+                        .addGroup(RegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tf_register_nombre)
+                            .addComponent(tf_register_user)
+                            .addComponent(tf_register_password)
+                            .addComponent(jd_register_fecha, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)))
+                    .addGroup(RegisterLayout.createSequentialGroup()
+                        .addGap(204, 204, 204)
+                        .addComponent(b_register_Register, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(76, Short.MAX_VALUE))
+        );
+        RegisterLayout.setVerticalGroup(
+            RegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(RegisterLayout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addComponent(jLabel6)
+                .addGap(47, 47, 47)
+                .addGroup(RegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(tf_register_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(RegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(tf_register_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(22, 22, 22)
+                .addGroup(RegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(tf_register_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(RegisterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel10)
+                    .addComponent(jd_register_fecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(47, 47, 47)
+                .addComponent(b_register_Register, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(93, Short.MAX_VALUE))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1257, 819));
 
@@ -196,15 +286,93 @@ public class Principal extends javax.swing.JFrame {
 
     private void b_login_loginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_login_loginMouseClicked
         // TODO add your handling code here:
-        
+
         DefaultListModel listaContacts = (DefaultListModel) jl_contactos.getModel();
+        for (AdminUsers U : Users) {
+            listaContacts.addElement(U);
+        }
         
         File f = null;
         Scanner sc = null;
         String usuario = tf_login_user.getText();
         String pass = pf_login_pass.getText();
         try {
-            f = new File("./ficheros/users.txt");
+            //System.out.println("f");
+            f = new File("./ficheros/Users.txt");
+            //System.out.println("u");
+            sc = new Scanner(f);
+            //System.out.println("n");
+            sc.useDelimiter(";");
+
+            String n, u, p;
+            int e;
+            while (sc.hasNext()) {
+                //System.out.println("c");
+                n = sc.next();
+                u = sc.next();
+                p = sc.next();
+                e = sc.nextInt();
+                
+                if (usuario.equals(u)) {
+                    userPrin = u;
+                    if (pass.equals(p)) {
+                        new Principal().setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Contraseña incorrecta");
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Algo salio mal");
+        }
+        sc.close();
+    }//GEN-LAST:event_b_login_loginMouseClicked
+
+    private void b_login_RegistrarseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_login_RegistrarseMouseClicked
+        // TODO add your handling code here:
+        Register.setVisible(true);
+        Login.setVisible(false);
+
+    }//GEN-LAST:event_b_login_RegistrarseMouseClicked
+
+    private void b_sendMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_sendMouseClicked
+        // TODO add your handling code here:
+        DefaultListModel lista = (DefaultListModel) jl_conversacion.getModel();
+        String mensaje = ta_mensajeEs.getText();
+        lista.addElement(userPrin + ": " + mensaje);
+        for (int i = 0; i < mensaje.length(); i++) {
+            if (mensaje.charAt(i) == ('1')) {
+                lista.addElement("Maquina: Funciona 1");
+            }
+            if (mensaje.charAt(i) == ('2')) {
+                lista.addElement("Maquina: Funciona 2");
+            }
+            if (mensaje.charAt(i) == ('3')) {
+                lista.addElement("Maquina: Funciona 3");
+            }
+            if (mensaje.charAt(i) == ('4')) {
+                lista.addElement("Maquina: Funciona 4");
+            }
+        }
+        ta_mensajeEs.setText("");
+
+    }//GEN-LAST:event_b_sendMouseClicked
+
+    private void b_register_RegisterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_register_RegisterMouseClicked
+        // TODO add your handling code here:
+        String nombre, user, password;
+        Date fecha;
+        int edad;
+        boolean b = true;
+        nombre = tf_register_nombre.getText();
+
+        File f = null;
+        Scanner sc = null;
+        user = tf_register_user.getText();
+        try {
+            f = new File("./ficheros/Users.txt");
             sc = new Scanner(f);
             sc.useDelimiter(";");
             String n, u, p;
@@ -214,52 +382,64 @@ public class Principal extends javax.swing.JFrame {
                 u = sc.next();
                 p = sc.next();
                 e = sc.nextInt();
-                
-                listaContacts.addElement(u);
-                if (usuario.equals(u)) {
-                    userPrin = u;
-                    if (pass.equals(p)) {
-                        new Principal().setVisible(true);
-                    }else {
-                        JOptionPane.showMessageDialog(this, "Contraseña incorrecta");
-                    }
+                if (user.equals(u)) {
+                    b = false;
                 }
+                //System.out.println("Funciona");
             }
-           
         } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Algo salio mal");
         }
-        sc.close();                                       
-    }//GEN-LAST:event_b_login_loginMouseClicked
+        sc.close();
 
-    private void b_login_RegistrarseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_login_RegistrarseMouseClicked
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_b_login_RegistrarseMouseClicked
-
-    private void b_sendMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_sendMouseClicked
-        // TODO add your handling code here:
-        DefaultListModel lista = (DefaultListModel) jl_conversacion.getModel();
-        String mensaje = ta_mensajeEs.getText();
-        lista.addElement(userPrin + ": " + mensaje);
-        for (int i = 0; i < mensaje.length(); i++) {
-            if(mensaje.charAt(i) == ('1')){
-                lista.addElement("Maquina: Funciona 1");
-            }
-            if(mensaje.charAt(i) == ('2')){
-                lista.addElement("Maquina: Funciona 2");
-            }
-            if(mensaje.charAt(i) == ('3')){
-                lista.addElement("Maquina: Funciona 3");
-            }
-            if(mensaje.charAt(i) == ('4')){
-                lista.addElement("Maquina: Funciona 4");
-            }
+        edad = 20 - (jd_register_fecha.getDate().getYear() - 100);
+        System.out.println(edad);
+        if (edad < 13) {
+            b = false;
         }
-        ta_mensajeEs.setText("");
-        
-    }//GEN-LAST:event_b_sendMouseClicked
+
+        if (b == true) {
+            try {
+                FileWriter fw = null;
+                BufferedWriter bw = null;
+                try {
+                    f = new File("./ficheros/Users.txt");
+                    fw = new FileWriter(f, true); //OJO
+                    bw = new BufferedWriter(fw);
+                    String u, p, n;
+                    int e;
+                    n = tf_register_nombre.getText();
+                    u = tf_register_password.getText();
+                    p = tf_register_password.getText();
+                    e = edad;
+
+                    bw.write(n + ";");
+                    bw.write(u + ";");
+                    bw.write(p + ";");
+                    bw.write(e + ";");
+                    bw.flush();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                tf_register_nombre.setText("");
+                tf_register_password.setText("");
+                tf_register_user.setText("");
+                
+                bw.close();
+                fw.close();
+                JOptionPane.showMessageDialog(this, "Guardado Con Exito");
+                Login.setVisible(true);
+                Register.setVisible(false);
+            } catch (IOException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Usuario no permitido");
+        }
+
+    }//GEN-LAST:event_b_register_RegisterMouseClicked
 
     /**
      * @param args the command line arguments
@@ -298,23 +478,34 @@ public class Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFrame Login;
+    private javax.swing.JFrame Register;
     private javax.swing.JButton b_login_Registrarse;
     private javax.swing.JButton b_login_login;
+    private javax.swing.JButton b_register_Register;
     private javax.swing.JButton b_send;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private com.toedter.calendar.JDateChooser jd_register_fecha;
     private javax.swing.JList<String> jl_contactos;
     private javax.swing.JList<String> jl_conversacion;
     private javax.swing.JPasswordField pf_login_pass;
     private javax.swing.JTextArea ta_mensajeEs;
     private javax.swing.JTextField tf_login_user;
+    private javax.swing.JTextField tf_register_nombre;
+    private javax.swing.JTextField tf_register_password;
+    private javax.swing.JTextField tf_register_user;
     // End of variables declaration//GEN-END:variables
-    ArrayList <AdminUsers> Users = new ArrayList();
-    ArrayList <String> mensajes = new ArrayList();
+    ArrayList<AdminUsers> Users = new ArrayList();
+    ArrayList<String> mensajes = new ArrayList();
 }

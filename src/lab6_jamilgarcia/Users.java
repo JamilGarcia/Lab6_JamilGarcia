@@ -53,8 +53,10 @@ public class Users {
 
     @Override
     public String toString() {
-        return user;
+        return "Users{" + "user=" + user + ", pass=" + pass + ", edad=" + edad + ", nombre=" + nombre + '}';
     }
+
+    
     
     
     
