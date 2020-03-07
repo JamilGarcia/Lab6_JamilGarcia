@@ -32,7 +32,7 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         Login.setVisible(true);
         //boolean visible = false;
-        
+
     }
 
     /**
@@ -287,11 +287,6 @@ public class Principal extends javax.swing.JFrame {
     private void b_login_loginMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_login_loginMouseClicked
         // TODO add your handling code here:
 
-        DefaultListModel listaContacts = (DefaultListModel) jl_contactos.getModel();
-        for (AdminUsers U : Users) {
-            listaContacts.addElement(U);
-        }
-        
         File f = null;
         Scanner sc = null;
         String usuario = tf_login_user.getText();
@@ -312,9 +307,15 @@ public class Principal extends javax.swing.JFrame {
                 u = sc.next();
                 p = sc.next();
                 e = sc.nextInt();
-                
+
+                User.add(new Users(u, p, e, n));
+                DefaultListModel listaContacts = (DefaultListModel) jl_contactos.getModel();
+                for (int i = 0; i < User.size(); i++) {
+                    listaContacts.addElement(((Users) User.get(i)).getUser());
+                }
+                jl_contactos.setModel(listaContacts);
                 if (usuario.equals(u)) {
-                    userPrin = u;
+                    userPrin = tf_login_user.getText();
                     if (pass.equals(p)) {
                         new Principal().setVisible(true);
                     } else {
@@ -344,21 +345,123 @@ public class Principal extends javax.swing.JFrame {
         lista.addElement(userPrin + ": " + mensaje);
         for (int i = 0; i < mensaje.length(); i++) {
             if (mensaje.charAt(i) == ('1')) {
-                lista.addElement("Maquina: Funciona 1");
+                mensaje = mensaje.toLowerCase();
+                String[] t = mensaje.split(" ");
+                String s = "", temp = "", temp2 = "", p = "", k = "", n = "aeiou";
+                int q;
+                for (int j = 0; j < t.length; j++) {
+                    s = t[i];
+                    q = 0;
+                    char[] ch = s.toCharArray();
+                    for (int l = 0; l < ch.length; l++) {
+                        char cha = ch[j];
+                        if (n.indexOf(cha) != -1) {
+                            q = n.indexOf(cha);
+                        }
+                    }
+
+                    if (s.length() <= 3) {
+                        p = s.concat("way");
+                        k += p + " ";
+                    } else {
+                        temp = s.substring(0, q + 1);
+                        temp2 = s.substring(q);
+                        mensaje += temp + temp2 + "ay";
+                    }
+
+                }
+
             }
             if (mensaje.charAt(i) == ('2')) {
-                lista.addElement("Maquina: Funciona 2");
+
+                String maquina2 = "";
+                int c;
+                char l;
+                for (int j = 0; j < mensaje.length(); j++) {
+                    if (mensaje.charAt(j) == ' ') {
+                        maquina2 += ' ';
+                    } else {
+                        l = mensaje.charAt(j);
+                        c = l;
+                        maquina2 += c;
+                    }
+                }
+                lista.addElement("Maquina: " + maquina2);
             }
             if (mensaje.charAt(i) == ('3')) {
-                lista.addElement("Maquina: Funciona 3");
-            }
-            if (mensaje.charAt(i) == ('4')) {
-                lista.addElement("Maquina: Funciona 4");
+
+                String[] t = mensaje.split(" ");
+                String to = "";
+                int x = 0;
+
+                String mitad1 = "abcdefghijklm";
+                String mitad2 = "zyxwvutsrqpon";
+                for (int j = 0; j < t.length; j++) {
+                    String p = "";
+                    to = t[i];
+                    char[] ch = to.toCharArray();
+                    for (int k = 0; k < ch.length; k++) {
+                        char c = ch[k];
+                        if (mitad1.indexOf(c) != -1) {
+                            x = mitad1.indexOf(c);
+                            ch[j] = mitad2.charAt(x);
+                            p += ch[j];
+                        } else {
+                            x = mitad2.indexOf(c);
+                            ch[j] = mitad1.charAt(x);
+                            p += ch[j];
+                        }
+                    }
+                    mensaje += p;
+
+                }
+                lista.addElement("Maquina: " + mensaje);
+
+            } else {
+                
+                int cont1 = 0, cont2 = 1, cont3 = 2, cont4 = 3;
+                String espacios = "";
+                for (int j = 0; j < mensaje.length() - 6; j++) {
+                    if (mensaje.charAt(j) != ' ') {
+                        espacios += mensaje.charAt(j);
+                    }
+                }
+                for (int j = 0; j < espacios.length(); j++) {
+                    if (j == cont1) {
+                        c1.add(espacios.charAt(j));
+                        cont1 += 4;
+                    } else if (j == cont2) {
+                        c2.add(espacios.charAt(j));
+                        cont2 += 4;
+                    } else if (j == cont3) {
+                        c3.add(espacios.charAt(j));
+                        cont3 += 4;
+                    } else if (j == cont4) {
+                        c4.add(espacios.charAt(j));
+                        cont4 += 4;
+                    }
+                }
+                mensaje = "";
+                for (Character o : c1) {
+                    mensaje += o;
+                }
+                for (Character o : c2) {
+                    mensaje += o;
+                }
+                for (Character o : c3) {
+                    mensaje += o;
+                }
+                for (Character o : c4) {
+                    mensaje += o;
+                }
+
             }
         }
+        lista.addElement("Maquina: " + mensaje);
         ta_mensajeEs.setText("");
 
     }//GEN-LAST:event_b_sendMouseClicked
+
 
     private void b_register_RegisterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_register_RegisterMouseClicked
         // TODO add your handling code here:
@@ -425,7 +528,7 @@ public class Principal extends javax.swing.JFrame {
                 tf_register_nombre.setText("");
                 tf_register_password.setText("");
                 tf_register_user.setText("");
-                
+
                 bw.close();
                 fw.close();
                 JOptionPane.showMessageDialog(this, "Guardado Con Exito");
@@ -506,6 +609,10 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTextField tf_register_password;
     private javax.swing.JTextField tf_register_user;
     // End of variables declaration//GEN-END:variables
-    ArrayList<AdminUsers> Users = new ArrayList();
+    ArrayList<Users> User = new ArrayList();
     ArrayList<String> mensajes = new ArrayList();
+    ArrayList<Character> c1 = new ArrayList();
+    ArrayList<Character> c2 = new ArrayList();
+    ArrayList<Character> c3 = new ArrayList();
+    ArrayList<Character> c4 = new ArrayList();
 }
